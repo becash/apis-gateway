@@ -1,0 +1,29 @@
+# components/schemas/ItineraryStart.yaml
+type: object
+description: Start trip information for an itinerary segment
+required:
+  - startTime
+  - startType
+  - location
+properties:
+  startTime:
+    type: string
+    pattern: "^\\d{2}:\\d{2}$"
+    description: Start time in 24-hour format (HH:mm)
+    example: "09:00"
+  startType:
+    type: string
+    enum:
+      - Meet_at_Start_Point
+      - Pickup_Everyone
+    description: |
+      How the trip starts:
+      - Meet_at_Start_Point: Guests meet at a designated spot  
+      - Pickup_Everyone: Supplier picks up all guests
+    example: Meet_at_Start_Point
+  location:
+    type: array
+    description: One or more start‐point locations
+    items:
+      $ref: './ProductPoi.yaml'
+    maxItems: 20

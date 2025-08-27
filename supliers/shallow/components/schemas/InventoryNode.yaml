@@ -1,0 +1,15 @@
+type: object
+description: Remaining stock node
+required:
+  - useDate
+  - quantity
+properties:
+  useDate:
+    type: string
+    format: date
+    description: Valid date (`yyyy-MM-dd`)
+    example: "2025-06-15"
+  quantity:
+    type: integer
+    description: Remaining quantity for that date
+    example: 5

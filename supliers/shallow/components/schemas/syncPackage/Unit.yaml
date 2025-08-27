@@ -1,0 +1,45 @@
+# components/schemas/Unit.yaml
+type: object
+description: One sellable “unit” (e.g. ticket type / quantity bucket)
+properties:
+  PLU:
+    type: string
+    maxLength: 80
+    description: Supplier’s minimum-unit code
+  reference:
+    type: string
+    description: Optional supplier reference for this unit
+  ticketTypeCode:
+    type: string
+    enum:
+      - Adult
+      - Child
+      - Senior
+      - Youth
+      - Infant
+      - Student
+      - Traveler
+      - Customized
+    description: Must match a TicketType.code defined elsewhere
+  customCode:
+    type: string
+    maxLength: 20
+    description: Only for Customized ticketTypeCode
+  restrictions:
+    $ref: './Restrictions.yaml'
+  currency:
+    $ref: './Currency.yaml'
+  netPriceCurrency:
+    type: string
+    description: Currency of the net price (ISO)
+  retailPriceCurrency:
+    type: string
+    description: Currency of the retail price (ISO)
+required:
+  - PLU
+  - ticketTypeCode
+  - restrictions
+  - currency
+  - netPriceCurrency
+  - retailPriceCurrency
+additionalProperties: false

@@ -1,0 +1,426 @@
+# yaml-language-server: $schema=https://spec.openapis.org/oas/3.1/schema/2022-10-07
+openapi: 3.0.0
+info:
+  title: GGT API Documentation
+  version: 1.0.0
+  description: Order API
+  x-logo:
+    url: "/assets/GGT_logo.png"     # must be absolute or full URL
+    altText: "GGT Logo"
+    backgroundColor: "#ffffff"
+    href: "/"                       # optional: where clicking the logo takes you
+
+servers:
+  - url: https://channel.swallow.goglobal.travel
+    description: Production Server
+  - url: https://swallow-channel.hprotravel.tech
+    description: Development Server
+
+tags:
+  - name: Order API
+    description: All order-related endpoints
+  - name: Callback API
+    description: Endpoints used by our channel to call back with updates
+  - name: Availability API
+    description: All availability-related endpoints
+  - name: Content API
+    description: Endpoints for content operations (images, media, etc.)
+
+x-tagGroups:
+  - name: Order APIs
+    tags:
+      - Order API
+  - name: Callback APIs
+    tags:
+      - Callback API
+  - name: Availability APIs
+    tags:
+      - Availability API
+  - name: Content APIs
+    tags:
+      - Content API
+
+paths:
+  /external:
+    post:
+      tags:
+        - Order API
+      summary: All Order APIs
+      operationId: externalHandler
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - title: CreatePreOrderRequest
+                  $ref: './components/schemas/CreatePreOrderRequest.yaml'
+                - title: PayPreOrderRequest
+                  $ref: './components/schemas/PayPreOrderRequest.yaml'
+                - title: CancelPreOrderRequest
+                  $ref: './components/schemas/CancelPreOrderRequest.yaml'
+                - title: CancelSuccessfulOrderRequest
+                  $ref: './components/schemas/CancelOrderRequest.yaml'
+                - title: BalanceInquiryRequest
+                  $ref: './components/schemas/BalanceInquiryRequest.yaml'
+                - title: QueryOrderRequest
+                  $ref: './components/schemas/QueryOrderRequest.yaml'
+                - title: ProductListRequest
+                  $ref: './components/schemas/ProductListRequest.yaml'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - title: CreatePreOrderResponse
+                    $ref: './components/schemas/CreatePreOrderResponse.yaml'
+                  - title: PayPreOrderResponse
+                    $ref: './components/schemas/PayPreOrderResponse.yaml'
+                  - title: CancelPreOrderResponse
+                    $ref: './components/schemas/CancelPreOrderResponse.yaml'
+                  - title: CancelSuccessfulOrderResponse
+                    $ref: './components/schemas/CancelOrderResponse.yaml'
+                  - title: BalanceInquiryResponse
+                    $ref: './components/schemas/BalanceInquiryResponse.yaml'
+                  - title: QueryOrderResponse
+                    $ref: './components/schemas/QueryOrderResponse.yaml'
+                  - title: ProductListResponse
+                    $ref: './components/schemas/ProductInquiryListResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint1:
+    post:
+      tags:
+        - Callback API
+      summary: Pay Pre-order Confirmation
+      operationId: payPreOrderConfirm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/PaymentConfirmRequest.yaml'
+      responses:
+        '200':
+          description: Confirmation Response
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/PaymentConfirmResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint2:
+    post:
+      tags:
+        - Callback API
+      summary: Order cancellation confirmation
+      operationId: cancelOrderConfirm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/CancelConfirmRequest.yaml'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/CancelConfirmResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint3:
+    post:
+      tags:
+        - Callback API
+      summary: Order consumed notification
+      operationId: orderConsumedNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/OrderConsumedNotificationRequest.yaml'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/OrderConsumedNotificationResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint4:
+    post:
+      tags:
+        - Availability API
+      summary: Resource price sync
+      operationId: resourcePriceSync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/ResourcePriceSyncRequest.yaml'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/ResourcePriceSyncResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint5:
+    post:
+      tags:
+        - Availability API
+      summary: Resource inventory sync
+      operationId: resourceInventorySync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/ResourceInventorySyncRequest.yaml'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/ResourceInventorySyncResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint6:
+    post:
+      tags:
+        - Content API
+      summary: Upload image
+      description: |
+        GGT will upload an image to channels and receive back an ID that can be used
+        as imageId for products.
+      operationId: uploadImage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/UploadImageRequest.yaml'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/UploadImageResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '429':
+          description: Too many requests, please try again
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/Error.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint7:
+    post:
+      tags:
+        - Content API
+      summary: Sync product
+      description: |-
+        GGT will create or update the product information and sends it to channels.
+        After asynchronous processing, channels will inform GGT of the result.
+      operationId: syncProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/SyncProductRequest.yaml'
+      responses:
+        '200':
+          description: Request accepted (async result available via query)
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/SyncProductResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '429':
+           $ref: './components/responses/TooManyRequests.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+  /channelEndpoint8:
+    post:
+      tags:
+        - Content API
+      summary: Sync package
+      description: >
+        GGT will create or update the package information and sends it to Channels.
+        After asynchronous processing, Channels will inform GGT of the result.
+        GGT can also query the job status.
+      operationId: syncPackage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/schemas/SyncPackageRequest.yaml'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: './components/schemas/SyncPackageResponse.yaml'
+        '400':
+          $ref: './components/responses/BadRequest.yaml'
+        '401':
+          $ref: './components/responses/Unauthorized.yaml'
+        '429':
+          $ref: './components/responses/TooManyRequests.yaml'
+        '500':
+          $ref: './components/responses/InternalServerError.yaml'
+
+components:
+  schemas:
+    User:
+      $ref: './components/schemas/User.yaml'
+    Error:
+      $ref: './components/schemas/Error.yaml'
+    CommonRequestHeader:
+      $ref: './components/schemas/CommonRequestHeader.yaml'
+    CommonResponseHeader:
+      $ref: './components/schemas/CommonResponseHeader.yaml'
+
+    CreatePreOrderRequest:
+      $ref: './components/schemas/CreatePreOrderRequest.yaml'
+    CreatePreOrderResponse:
+      $ref: './components/schemas/CreatePreOrderResponse.yaml'
+    PayPreOrderRequest:
+      $ref: './components/schemas/PayPreOrderRequest.yaml'
+    PayPreOrderResponse:
+      $ref: './components/schemas/PayPreOrderResponse.yaml'
+    CancelPreOrderRequest:
+      $ref: './components/schemas/CancelPreOrderRequest.yaml'
+    CancelPreOrderResponse:
+      $ref: './components/schemas/CancelPreOrderResponse.yaml'
+    CancelOrderRequest:
+      $ref: './components/schemas/CancelOrderRequest.yaml'
+    CancelOrderResponse:
+      $ref: './components/schemas/CancelOrderResponse.yaml'
+    BalanceInquiryRequest:
+      $ref: './components/schemas/BalanceInquiryRequest.yaml'
+    BalanceInquiryResponse:
+      $ref: './components/schemas/BalanceInquiryResponse.yaml'
+    InventoryNode:
+      $ref: './components/schemas/InventoryNode.yaml'
+    CreatePreOrderResponseItem:
+      $ref: './components/schemas/CreatePreOrderResponseItem.yaml'
+    PaymentConfirmRequest:
+      $ref: './components/schemas/PaymentConfirmRequest.yaml'
+    PaymentConfirmResponse:
+      $ref: './components/schemas/PaymentConfirmResponse.yaml'
+    CancelOrderConfirmRequest:
+      $ref: './components/schemas/CancelConfirmRequest.yaml'
+    CancelOrderConfirmResponse:
+      $ref: './components/schemas/CancelConfirmResponse.yaml'
+    OrderConsumedNotificationRequest:
+      $ref: './components/schemas/OrderConsumedNotificationRequest.yaml'
+    OrderConsumedNotificationResponse:
+      $ref: './components/schemas/OrderConsumedNotificationResponse.yaml'
+    ResourcePriceSyncRequest:
+      $ref: './components/schemas/ResourcePriceSyncRequest.yaml'
+    ResourcePriceSyncResponse:
+      $ref: './components/schemas/ResourcePriceSyncResponse.yaml'
+    ResourceInventorySyncRequest:
+      $ref: './components/schemas/ResourceInventorySyncRequest.yaml'
+    ResourceInventorySyncResponse:
+      $ref: './components/schemas/ResourceInventorySyncResponse.yaml'
+    SyncProductRequest:
+      $ref: './components/schemas/SyncProductRequest.yaml'
+    SyncProductResponse:
+      $ref: './components/schemas/SyncProductResponse.yaml'
+    QueryOrderRequest:
+      $ref: './components/schemas/QueryOrderRequest.yaml'
+    QueryOrderRequestBody:
+      $ref: './components/schemas/QueryOrderRequestBody.yaml'
+    QueryOrderResponse:
+      $ref: './components/schemas/QueryOrderResponse.yaml'
+    QueryOrderResponseBody:
+      $ref: './components/schemas/QueryOrderResponseBody.yaml'
+    QueryOrderItem:
+      $ref: './components/schemas/QueryOrderItem.yaml'
+    QueryOrderPassenger:
+      $ref: './components/schemas/QueryOrderPassenger.yaml'
+    QueryOrderVoucher:
+      $ref: './components/schemas/QueryOrderVoucher.yaml'
+    ProductListRequest:
+      $ref: './components/schemas/ProductListRequest.yaml'
+    ProductInquiryListResponse:
+      $ref: './components/schemas/ProductInquiryListResponse.yaml'
+    ProductInquiryBody:
+      $ref: './components/schemas/ProductInquiryBody.yaml'
+
+
+    # New Content API schemas
+    UploadImageRequest:
+      $ref: './components/schemas/UploadImageRequest.yaml'
+    UploadImageResponse:
+      $ref: './components/schemas/UploadImageResponse.yaml'
+    ImageData:
+      $ref: './components/schemas/ImageData.yaml'
+    SyncPackageRequest:
+      $ref: './components/schemas/SyncPackageRequest.yaml'
+    SyncPackageResponse:
+      $ref: './components/schemas/SyncPackageResponse.yaml'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

@@ -1,0 +1,20 @@
+description: Bad Request - The request was unacceptable, often due to missing a required parameter or invalid data.
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - header
+      properties:
+        header:
+          type: object
+          required:
+            - resultCode
+            - resultMessage
+          properties:
+            resultCode:
+              type: string
+              description: Error code
+            resultMessage:
+              type: string
+              description: Error message

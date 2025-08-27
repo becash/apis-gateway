@@ -1,0 +1,106 @@
+type: object
+description: Pre-order payment response (AES-encrypted in `body` when `resultCode` is `0000`)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonResponseHeader.yaml'
+  body:
+    type: object
+    description: response body (This field requires AES encryption during transmission; see Data-Exchange-And-Security)
+    required:
+      - otaOrderId
+      - supplierOrderId
+      - supplierConfirmType
+      - voucherSender
+      - vouchers
+    properties:
+      otaOrderId:
+        type: string
+        description: Channel order number
+        example: "OTA1234567890"
+      supplierOrderId:
+        type: string
+        description: GGT order number
+        example: "SUP0987654321"
+      supplierConfirmType:
+        type: integer
+        description: >
+          Supplier Confirmation Type:
+          1. The pre-order payment has been confirmed.
+          2. The pre-order payment is pending confirmation (asynchronous).
+        example: 1
+      voucherSender:
+        type: integer
+        description: >
+          Voucher Sender:
+          1. Channel sends vouchers to customers.
+          2. GGT sends vouchers to customers directly.
+        example: 1
+      vouchers:
+        type: array
+        description: Voucher collection node (translated per locale).
+          Returned when `supplierConfirmType=1`.
+        items:
+          type: object
+          required:
+            - voucherType
+          properties:
+            itemId:
+              type: string
+              description: Order line item number.
+              example: "LI123456"
+            voucherId:
+              type: string
+              description: Voucher number (required when `isCredentialVouchers=1`).
+              example: "VCH123456"
+            voucherType:
+              type: integer
+              description: |
+                Voucher type:
+                  1. Ordinary voucher
+                  2. Digital code
+                  3. QR code image
+                  4. Image
+                  5. PDF Confirmation Form
+                  6. Voucher Link
+                  7. Barcode 128
+                  8. Barcode 417
+              example: 3
+            voucherCode:
+              type: string
+              description: Voucher code (ancillary for types 3–8).
+            voucherData:
+              type: string
+              description: Voucher data source (base64 string for image/PDF/etc).
+            voucherSeatInfo:
+              type: string
+              description: Voucher seat information (one-to-one with voucher).
+      orderExtendMessage:
+        type: string
+        description: Additional usage instructions for this order.
+        example: "Please show this voucher at the venue."
+      items:
+        type: array
+        description: Array of order-line item nodes with stock details (optional).
+        items:
+          type: object
+          required:
+            - passengerId
+            - voucherId
+            - inventories
+          properties:
+            passengerId:
+              type: string
+              description: Passenger number.
+              example: "P1"
+            voucherId:
+              type: string
+              description: Voucher number.
+              example: "VCH123456"
+            inventories:
+              type: array
+              description: Node of remaining stock quantity.
+              items:
+                $ref: './InventoryNode.yaml'

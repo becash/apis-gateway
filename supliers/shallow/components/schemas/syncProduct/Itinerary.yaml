@@ -1,0 +1,22 @@
+# components/schemas/Itinerary.yaml
+type: object
+description: Itinerary information (Day_tour products only)
+properties:
+  start:
+    type: array
+    description: Start point(s) information
+    items:
+      $ref: './ItineraryStart.yaml'
+    maxItems: 20
+  duration:
+    $ref: './TravelDuration.yaml'
+  description:
+    type: string
+    maxLength: 1000
+    description: Additional trip-start description
+  end:
+    type: array
+    description: End point(s) information
+    items:
+      $ref: './ItineraryEnd.yaml'
+    maxItems: 20

@@ -1,0 +1,55 @@
+# components/schemas/ProductPoi.yaml
+type: object
+description: Point of interest for this product (either supplier POI or Google Place)
+oneOf:
+  - type: object
+    required:
+      - supplierPOI
+    properties:
+      supplierPOI:
+        type: object
+        required:
+          - supplierId
+          - mappingElements
+        properties:
+          supplierId:
+            type: string
+            maxLength: 200
+            description: Supplier POI ID
+            example: "POI_12345"
+          mappingElements:
+            type: object
+            required:
+              - name
+              - addressDetail
+              - latitude
+              - longitude
+            properties:
+              name:
+                type: string
+                maxLength: 100
+                description: Location name
+                example: "Eiffel Tower"
+              addressDetail:
+                type: string
+                maxLength: 100
+                description: Address detail
+                example: "Champ de Mars, 5 Avenue Anatole France, 75007 Paris"
+              latitude:
+                type: number
+                format: float
+                description: Latitude
+                example: 48.8584
+              longitude:
+                type: number
+                format: float
+                description: Longitude
+                example: 2.2945
+  - type: object
+    required:
+      - googlePlaceId
+    properties:
+      googlePlaceId:
+        type: string
+        description: Google Place ID
+        example: "ChIJrTLr-GyuEmsRBfy61i59si0"

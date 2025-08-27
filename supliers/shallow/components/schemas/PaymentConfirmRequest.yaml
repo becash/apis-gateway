@@ -1,0 +1,130 @@
+type: object
+description: Request payload for pre-order payment confirmation (AES-encrypted in `body`; see Data-Exchange-And-Security)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonRequestHeader.yaml'
+  body:
+    type: object
+    description: request body (AES-encrypted)
+    required:
+      - sequenceId
+      - otaOrderId
+      - supplierOrderId
+      - confirmResultCode
+      - confirmResultMessage
+      - voucherSender
+      - vouchers
+      - orderExtendMessage
+      - items
+    properties:
+      sequenceId:
+        type: string
+        description: GGT Batch Number (`yyyyMMdd` + 32-bit GUID without delimiters)
+        example: "20250507A1B2C3D4E5F6G7H8"
+      otaOrderId:
+        type: string
+        description: Channel's order number
+        example: "OTA1234567890"
+      supplierOrderId:
+        type: string
+        description: GGT order number
+        example: "SUP0987654321"
+      confirmResultCode:
+        type: integer
+        description: >
+          The return code of confirmation result.  
+          See: Channel's standard interface codes (`0000` = success).
+        example: 0
+      confirmResultMessage:
+        type: string
+        description: Confirmation result detail (e.g. “Confirmation succeeded” or failure reason)
+        example: "Confirmation succeeded"
+      voucherSender:
+        type: integer
+        description: >
+          Voucher sender:  
+          `1` = Channel sends voucher;  
+          `2` = Supplier sends voucher (mandatory if `voucherSender=2` at create time).
+        example: 1
+      vouchers:
+        type: array
+        description: Voucher collection (returned when `confirmResultCode=0000`)
+        items:
+          type: object
+          required:
+            - voucherType
+          properties:
+            itemId:
+              type: string
+              description: Order line item identifier
+              example: "LI123456"
+            voucherId:
+              type: string
+              description: Voucher number (required when credential vouchers apply)
+              example: "VCH123456"
+            voucherType:
+              type: integer
+              description: |
+                Voucher form:  
+                1 = Ordinary; 2 = Digital code; 3 = QR code; 4 = Image;  
+                5 = PDF; 6 = Link; 7 = Barcode128; 8 = Barcode417
+              example: 3
+            voucherCode:
+              type: string
+              description: Ancillary code for types 3–8
+            voucherData:
+              type: string
+              description: Data stream (base64 or original string) for QR/PDF/etc.
+            voucherSeatInfo:
+              type: string
+              description: Seat info (one-to-one with voucher), e.g. “Row 15, Seat 09”
+      orderExtendMessage:
+        type: string
+        description: Additional usage instructions
+        example: "Please present this voucher at the entrance."
+      items:
+        type: array
+        description: Stock & passenger mapping per line item
+        items:
+          type: object
+          required:
+            - itemId
+            - isCredentialVouchers
+            - inventories
+          properties:
+            itemId:
+              type: string
+              description: Order line item ID
+              example: "LI123456"
+            isCredentialVouchers:
+              type: integer
+              description: >
+                Whether passenger vouchers apply:  
+                `1` = yes (must include `passengerVouchers`),  
+                `0` = no
+              example: 1
+            passengerVouchers:
+              type: array
+              description: Passenger-voucher relationships (when `isCredentialVouchers=1`)
+              items:
+                type: object
+                required:
+                  - passengerId
+                  - voucherId
+                properties:
+                  passengerId:
+                    type: string
+                    description: Passenger identifier
+                    example: "P1"
+                  voucherId:
+                    type: string
+                    description: Voucher number
+                    example: "VCH123456"
+            inventories:
+              type: array
+              description: Remaining stock nodes
+              items:
+                $ref: './InventoryNode.yaml'

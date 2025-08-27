@@ -1,0 +1,59 @@
+type: object
+description: Booking rules of the product.
+required:
+  - bookingType
+properties:
+  bookingType:
+    type: object
+    description: Booking type.
+    required:
+      - dateType
+      - dateLimit
+    properties:
+      dateType:
+        type: string
+        enum:
+          - DATE_REQUIRED
+          - DATE_NOT_REQUIRED
+        description: |
+          Indicates whether customer must specify a visit date when booking.
+          One of "DATE_REQUIRED" (date mandatory) or "DATE_NOT_REQUIRED".
+      dateLimit:
+        type: object
+        description: Details of date limit.
+        required:
+          - dateLimitType
+        properties:
+          dateLimitType:
+            type: string
+            enum:
+              - Single_Date
+              - Multi_Date
+              - Customized
+              - Unlimited
+            description: |
+              Limit type: "Single_Date" (only valid on the visit date),
+              "Multi_Date" (valid within a duration),
+              "Customized" (custom date range),
+              "Unlimited" (no limit).
+          multiDateDuration:
+            type: integer
+            minimum: 2
+            maximum: 999
+            description: |
+              Number of days the ticket is valid (only for Multi_Date).
+          customizedDateRange:
+            type: object
+            description: Customized time duration (only for Customized).
+            required:
+              - fromDate
+              - toDate
+            properties:
+              fromDate:
+                type: string
+                format: date
+                description: Start date (yyyy-MM-dd).
+              toDate:
+                type: string
+                format: date
+                description: End date (yyyy-MM-dd).

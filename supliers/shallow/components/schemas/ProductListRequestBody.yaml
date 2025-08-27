@@ -1,0 +1,25 @@
+oneOf:
+  # Case 1: list all products
+  - type: object
+    description: List all products.
+    properties:
+      type:
+        type: integer
+        const: 1
+        description: 1 = list all products
+    required: [type]
+    additionalProperties: false
+
+  # Case 2: fetch a single product by ID
+  - type: object
+    description: Fetch product by supplier product ID.
+    properties:
+      type:
+        type: integer
+        const: 2
+        description: 2 = fetch by productId
+      productId:
+        type: string
+        description: Supplier product ID
+    required: [type, productId]
+    additionalProperties: false

@@ -1,0 +1,46 @@
+# components/schemas/PackageOptionList.yaml
+type: object
+description: Option list entry for a package, including its metadata and per-unit definitions
+properties:
+  option:
+    type: array
+    description: List of selectable values for this option
+    items:
+      $ref: './PackageOption.yaml'
+  optionStatus:
+    type: string
+    enum:
+      - active
+      - inactive
+    description: |
+      Option status:
+      - `active` = valid
+      - `inactive` = not valid
+  optionDescription:
+    type: string
+    maxLength: 200
+    description: Free-text description of this option
+  bookingCutOffTime:
+    $ref: './BookingCutOffTime.yaml'
+    description: When bookings for this option must close relative to the visit date
+  bookingQuestions:
+    type: array
+    maxItems: 20
+    description: >
+      Questions the customer must answer when selecting this option.
+      Each is answered once per order.
+    items:
+      $ref: './BookingQuestions.yaml'
+  unit:
+    type: array
+    description: >
+      Definition of each “unit” (PLU) available under this option.
+      Used for pricing & ordering.
+    items:
+      $ref: './Unit.yaml'
+required:
+  - option
+  - optionStatus
+  - bookingCutOffTime
+  - unit
+additionalProperties: false

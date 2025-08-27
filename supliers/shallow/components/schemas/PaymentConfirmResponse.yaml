@@ -1,0 +1,11 @@
+type: object
+description: Pre-order payment confirmation response (AES-encrypted in `body` when `resultCode=0000`)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonResponseHeader.yaml'
+  body:
+    type: object
+    description: response body (AES-encrypted; see Data-Exchange-And-Security)

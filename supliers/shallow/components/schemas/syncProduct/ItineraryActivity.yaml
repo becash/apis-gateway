@@ -1,0 +1,21 @@
+# components/schemas/ItineraryActivity.yaml
+type: object
+description: Activity item information of the product itinerary
+required:
+  - time
+  - location
+properties:
+  time:
+    type: string
+    pattern: "^\\d{2}:\\d{2}$"
+    description: >
+      The estimated start time of each activity.  
+      Time format: HH:mm.
+    example: "10:30"
+  location:
+    type: array
+    description: >
+      One or more locations for this activity (supplier POI or Google Place).
+    items:
+      $ref: './ProductPoi.yaml'
+    maxItems: 20

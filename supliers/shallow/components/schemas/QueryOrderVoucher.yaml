@@ -1,0 +1,14 @@
+type: object
+required:
+  - voucherId
+  - voucherStatus
+properties:
+  voucherId:
+    type: string
+    description: Voucher number.
+    example: "VCH-12345"
+  voucherStatus:
+    type: integer
+    enum: [0, 1, 2]
+    description: 0=Pending, 1=Used, 2=Canceled.
+    example: 0

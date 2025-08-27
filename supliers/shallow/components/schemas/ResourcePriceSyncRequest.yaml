@@ -1,0 +1,63 @@
+type: object
+description: Request payload for resource price synchronization (AES-encrypted; see Data-Exchange-And-Security)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonRequestHeader.yaml'
+  body:
+    type: object
+    description: Request body (AES-encrypted)
+    required:
+      - sequenceId
+      - dateType
+      - prices
+    properties:
+      sequenceId:
+        type: string
+        description: GGT batch number (`yyyyMMdd` + GUID)
+        example: "20250507A1B2C3D4E5F6G7H8"
+      otaOptionId:
+        type: integer
+        description: Channel's resource ID (not required if `supplierOptionId` is provided)
+        example: 12345
+      supplierOptionId:
+        type: string
+        description: Supplier’s PLU (not required if `otaOptionId` is provided)
+        example: "PLU98765"
+      dateType:
+        type: string
+        description: |-
+          Date type:
+          - `DATE_REQUIRED`: Dated products (date required, up to 90 days).
+          - `DATE_NOT_REQUIRED`: Open-date products (no date).
+        enum:
+          - DATE_REQUIRED
+          - DATE_NOT_REQUIRED
+        example: DATE_REQUIRED
+      prices:
+        type: array
+        description: Price nodes (retail update `salePrice`; non-retail update `costPrice`)
+        items:
+          type: object
+          required:
+            - salePrice
+            - costPrice
+          properties:
+            date:
+              type: string
+              format: date
+              description: |-
+                Date (`yyyy-MM-dd`).  
+                Only required when `dateType=DATE_REQUIRED`.  
+                Up to 90 days per request.
+              example: "2025-06-15"
+            salePrice:
+              type: number
+              description: Offer price
+              example: 120.50
+            costPrice:
+              type: number
+              description: Settlement price
+              example: 100.00

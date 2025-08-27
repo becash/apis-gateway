@@ -1,0 +1,12 @@
+type: object
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonRequestHeader.yaml'
+  body:
+    $ref: './QueryOrderRequestBody.yaml'
+description: |
+  Order inquiry request (serviceName: QueryOrder).
+  The request body is encrypted in transit as per Data-Exchange-And-Security.

@@ -1,0 +1,29 @@
+type: object
+description: Pre-order creation response (AES-encrypted in `body` when `resultCode` is `0000`)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonResponseHeader.yaml'
+  body:
+    type: object
+    description: Response payload
+    required:
+      - otaOrderId
+      - supplierOrderId
+      - items
+    properties:
+      otaOrderId:
+        type: string
+        description: Channel's order number
+        example: "OTA1234567890"
+      supplierOrderId:
+        type: string
+        description: GGT order number
+        example: "SUP0987654321"
+      items:
+        type: array
+        description: Array of line-item responses
+        items:
+          $ref: ./CreatePreOrderResponseItem.yaml

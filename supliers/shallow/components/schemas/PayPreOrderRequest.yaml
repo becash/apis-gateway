@@ -1,0 +1,93 @@
+type: object
+description: Request payload for pre-order payment (AES-encrypted at transport; see Data-Exchange-And-Security)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonRequestHeader.yaml'
+  body:
+    type: object
+    description: request body (This field requires AES encryption during transmission)
+    required:
+      - sequenceId
+      - otaOrderId
+      - supplierOrderId
+      - confirmType
+      - orderLastConfirmTime
+      - items
+    properties:
+      sequenceId:
+        type: string
+        description: Channel's Batch Number. The format is processing date yyyyMMdd + 32-bit GUID without delimiters
+        example: "20250507A1B2C3D4E5F6G7H8"
+      otaOrderId:
+        type: string
+        description: Channel's order number
+        example: "OTA1234567890"
+      supplierOrderId:
+        type: string
+        description: GGT order number
+        example: "SUP0987654321"
+      confirmType:
+        type: integer
+        description: |
+          Confirmation type:
+          1. Only notify supplier (GGT) with new order information. If the order needs confirmation, GGT will operate on channel's platform. GGT will return `"0000"`, which does not affect channel's downstream confirmation logic.
+          2. System confirmed by supplier (Synchronously or Asynchronously). Channel proceeds according to the returned result (Success or Failure) from GGT.
+        example: 2
+      orderLastConfirmTime:
+        type: string
+        format: date-time
+        description: >
+          The latest confirmation deadline for suppliers (GGT), formatted as `yyyy-MM-dd HH:mm:ss`.  
+          Suppliers must complete confirmation before this time or the order will be treated as failed.
+        example: "2025-05-07 16:00:00"
+      items:
+        type: array
+        description: Array of order-line item objects
+        items:
+          type: object
+          required:
+            - itemId
+            - PLU
+          properties:
+            itemId:
+              type: string
+              description: Order line item identifier -- needs to be sent by channels (mapping needs to be between PLU and ItemId)
+              example: "LI123456"
+            PLU:
+              type: string
+              description: Minimum Unit of GGT Product (e.g. supplier’s product code)
+              example: "PLU98765"
+      coupons:
+        type: array
+        description: |
+          Array of coupon objects (preferential information).  
+          Note: Only include if after-sales service is “provided by supplier”; otherwise omit.
+        items:
+          type: object
+          required:
+            - type
+          properties:
+            type:
+              type: integer
+              description: >
+                Coupon source type: `1` = Channel; `2` = Supplier
+              example: 1
+            code:
+              type: string
+              description: Coupon code
+              example: "CPN2025SPRING"
+            name:
+              type: string
+              description: Coupon name
+              example: "Spring Promotion"
+            amount:
+              type: number
+              description: Coupon amount
+              example: 50.00
+            amountCurrency:
+              type: string
+              description: Coupon currency (ISO code, e.g. `CNY`)
+              example: "CNY"

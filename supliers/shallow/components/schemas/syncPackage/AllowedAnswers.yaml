@@ -1,0 +1,16 @@
+# components/schemas/AllowedAnswers.yaml
+type: object
+description: One allowed answer for a single-selection question
+properties:
+  code:
+    type: string
+    maxLength: 200
+    description: Supplier’s answer code
+  name:
+    type: string
+    maxLength: 100
+    description: Human-readable answer
+required:
+  - code
+  - name
+additionalProperties: false

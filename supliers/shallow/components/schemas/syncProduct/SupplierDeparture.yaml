@@ -1,0 +1,50 @@
+type: object
+description: Supplier departure mapping (optional; default=destination)
+oneOf:
+  - type: object
+    required:
+      - supplierDeparture
+    properties:
+      supplierDeparture:
+        type: object
+        required:
+          - supplierId
+          - mappingElements
+        properties:
+          supplierId:
+            type: string
+            maxLength: 200
+            description: Supplier departure city ID
+            example: "DEPT_2002"
+          mappingElements:
+            type: object
+            required:
+              - name
+              - addressDetail
+              - latitude
+              - longitude
+            properties:
+              name:
+                type: string
+                maxLength: 100
+                example: "Lyon"
+              addressDetail:
+                type: string
+                maxLength: 100
+                example: "Place Bellecour"
+              latitude:
+                type: number
+                format: float
+                example: 45.7640
+              longitude:
+                type: number
+                format: float
+                example: 4.8357
+  - type: object
+    required:
+      - googlePlaceId
+    properties:
+      googlePlaceId:
+        type: string
+        description: Google Place ID
+        example: "ChIJGzE9DS1l5kcRBus7fQNf0xE"

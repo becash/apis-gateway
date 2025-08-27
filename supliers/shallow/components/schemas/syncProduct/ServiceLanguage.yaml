@@ -1,0 +1,27 @@
+# components/schemas/ServiceLanguage.yaml
+type: object
+description: Available service language for the product
+required:
+  - languageCode
+properties:
+  languageCode:
+    type: string
+    enum:
+      - zh-CN
+      - zh-CAN
+      - en
+      - th
+      - id
+      - ms
+      - fi
+      - vi
+      - ko
+      - ja
+      - de
+      - fr
+      - es
+      - it
+      - ru
+      - pt
+    description: ISO language code
+    example: en

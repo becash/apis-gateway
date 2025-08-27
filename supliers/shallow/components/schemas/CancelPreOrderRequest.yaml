@@ -1,0 +1,23 @@
+type: object
+description: Request payload for pre-order cancellation (AES-encrypted at transport; see Data-Exchange-And-Security)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonRequestHeader.yaml'
+  body:
+    type: object
+    description: request body (This field requires AES encryption during transmission)
+    required:
+      - sequenceId
+      - otaOrderId
+    properties:
+      sequenceId:
+        type: string
+        description: Channel's Batch Number. Format is processing date `yyyyMMdd` + 32-bit GUID without delimiters
+        example: "20250507A1B2C3D4E5F6G7H8"
+      otaOrderId:
+        type: string
+        description: Channel's order number
+        example: "OTA1234567890"

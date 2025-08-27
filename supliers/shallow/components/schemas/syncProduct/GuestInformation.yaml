@@ -1,0 +1,24 @@
+type: object
+description: Guest information needed when booking an order.
+required:
+  - type
+  - code
+properties:
+  type:
+    type: string
+    enum:
+      - PER_PERSON
+      - PER_ORDER
+    description: How much guest information is needed in one order.
+  code:
+    type: array
+    items:
+      type: string
+      enum:
+        - GUEST_NAME
+        - COUNTRY
+        - BIRTH_DATE
+        - PassportNo
+    description: |
+      Guest booking questions.
+      Possible values are "GUEST_NAME", "COUNTRY", "BIRTH_DATE", "PassportNo", etc.

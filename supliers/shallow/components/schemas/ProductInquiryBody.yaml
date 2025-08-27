@@ -1,0 +1,141 @@
+type: object
+title: ProductInquiryBody
+additionalProperties: false
+required:
+  - productId
+  - productName
+  - productVersion
+  - primaryLanguage
+  - productType
+  - status
+  - costPrice
+  - costPriceCurrency
+  - isRefundableAfterExpiration
+  - pluMap
+  - variants
+properties:
+  productId:
+    type: string
+    description: Supplier product ID as a numeric string.
+    pattern: '^\d+$'
+  productName:
+    type: string
+    description: Display name of the product.
+    maxLength: 200
+  productVersion:
+    type: integer
+    format: int32
+    description: Upstream version of the product.
+  primaryLanguage:
+    type: string
+    description: BCP-47-like language/locale for primary content.
+    enum: [zh-CN, zh-HK, en-US, ko-KR, ja-JP, th-TH]
+  status:
+    type: string
+    description: Normalized sale status.
+    enum: [active, inactive]
+  costPrice:
+    type: string
+    description: Product-level rollup (minimum variant costPrice), serialized as string.
+    pattern: '^\d+$'
+  costPriceCurrency:
+    type: string
+    description: ISO 4217 currency code of costPrice.
+    minLength: 3
+    maxLength: 3
+  isRefundableAfterExpiration:
+    type: boolean
+    description: Whether refund is allowed after voucher expiration (product-level).
+  productType:
+    type: string
+    description: Product type.
+    enum: [DATE, DATE_TIME, NO_DATE_TIME]
+  pluMap:
+    type: object
+    description: PLU key→value map for mapping variants to PLU.
+  variants:
+    type: array
+    description: product variants
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required:
+        - variantId
+        - productId
+        - variantName
+        - refundApprovalTypeCode
+        - salePeriod
+      properties:
+        variantId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        variantName:
+          type: string
+          maxLength: 200
+        refundApprovalTypeCode:
+          type: string
+          description: Refund decision authority.
+          enum: [DIRECT, ADMIN]
+        quantityPerPerson:
+          type: integer
+          format: int64
+        quantityPerPurchase:
+          type: integer
+          format: int64
+        isRefundableAfterExpiration:
+          type: boolean
+        isAvailableOnPurchaseDate:
+          type: boolean
+        refundInfo:
+          type: string
+          maxLength: 2000
+        variantStatusCode:
+          type: string
+          enum: [IN_SALE, END_OF_SALE]
+          description: sale status of the variant.
+        currency:
+          type: string
+          description: ISO 4217 currency of prices.
+          minLength: 3
+          maxLength: 3
+        salePrice:
+          type: integer
+          format: int64
+          description: recommended sale price of variant (e.g., KRW).
+        costPrice:
+          type: integer
+          format: int64
+          description: Cost price given by GGT.
+        validityDays:
+          type: integer
+          description: Voucher validity in days.
+          minimum: 0
+        isVoucherUsed:
+          type: boolean
+        voucherDisplayTypeCode:
+          type: string
+          enum: [QR, BARCODE, NONE]
+          description: For none, PDF_URL will be sent
+        salePeriod:
+          type: object
+          additionalProperties: false
+          required: [startDateTime, endDateTime]
+          properties:
+            startDateTime:
+              type: string
+              format: date-time
+              description: RFC 3339 timestamp.
+            endDateTime:
+              type: string
+              format: date-time
+              description: RFC 3339 timestamp.
+            timezone:
+              type: string
+              description: IANA timezone name (e.g., Asia/Seoul).
+            offset:
+              type: string
+              description: UTC offset (e.g., +09:00).

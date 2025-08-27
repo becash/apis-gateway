@@ -1,0 +1,10 @@
+type: object
+description: Upload image request payload
+required:
+  - imageUrl
+properties:
+  imageUrl:
+    type: string
+    maxLength: 1000
+    description: The image URL to upload
+    example: "https://example.com/my-image.jpg"

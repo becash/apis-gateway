@@ -1,0 +1,56 @@
+type: object
+description: Cancellation policy.
+required:
+  - type
+  - confirmationTime
+properties:
+  type:
+    type: string
+    enum:
+      - Non_Cancellable
+      - Free_Cancel
+      - By_Visit_Date
+    description: |
+      Cancellation type of the product:
+      "Non_Cancellable", "Free_Cancel" (any time), or "By_Visit_Date".
+  rateList:
+    type: array
+    maxItems: 5
+    description: > 
+      Only for By_Visit_Date: list of cancellation fees by day.
+    items:
+      type: object
+      required:
+        - dayBeforeVisitDate
+        - time
+        - unit
+        - value
+      properties:
+        dayBeforeVisitDate:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Number of days before the visit date.
+        time:
+          type: string
+          pattern: '^[0-2]\d:[0-5]\d$'
+          description: Time on that day (HH:mm).
+        unit:
+          type: string
+          enum:
+            - PERCENTAGE
+          description: Rate unit (only "PERCENTAGE" supported).
+        value:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Rate value (percentage).
+  confirmationTime:
+    type: integer
+    enum:
+      - 8
+      - 16
+      - 24
+    description: |
+      How many hours to wait for the cancellation result.
+      Options: 8, 16, or 24.

@@ -1,0 +1,17 @@
+# components/schemas/ProductTag.yaml
+type: object
+description: Supplier product tag
+required:
+  - id
+  - tagName
+properties:
+  id:
+    type: string
+    maxLength: 16
+    description: Product tag id
+    example: "TAG1234"
+  tagName:
+    type: string
+    maxLength: 128
+    description: Product tag name
+    example: "Wi-Fi available"

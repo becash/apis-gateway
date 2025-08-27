@@ -1,0 +1,50 @@
+type: object
+description: Supplier destination mapping (one per item)
+oneOf:
+  - type: object
+    required:
+      - supplierDestination
+    properties:
+      supplierDestination:
+        type: object
+        required:
+          - supplierId
+          - mappingElements
+        properties:
+          supplierId:
+            type: string
+            maxLength: 200
+            description: Supplier destination city ID
+            example: "DEST_1001"
+          mappingElements:
+            type: object
+            required:
+              - name
+              - addressDetail
+              - latitude
+              - longitude
+            properties:
+              name:
+                type: string
+                maxLength: 100
+                example: "Paris"
+              addressDetail:
+                type: string
+                maxLength: 100
+                example: "Île de la Cité"
+              latitude:
+                type: number
+                format: float
+                example: 48.8566
+              longitude:
+                type: number
+                format: float
+                example: 2.3522
+  - type: object
+    required:
+      - googlePlaceId
+    properties:
+      googlePlaceId:
+        type: string
+        description: Google Place ID
+        example: "ChIJD7fiBh9u5kcRYJSMaMOCCwQ"

@@ -1,0 +1,16 @@
+type: object
+description: >
+  Acknowledgement of the sync product request.
+  Contains only the processing result code and message.
+required:
+  - resultCode
+  - resultMessage
+properties:
+  resultCode:
+    type: string
+    description: Response code of processing result
+    example: "0000"
+  resultMessage:
+    type: string
+    description: Response message of processing result
+    example: "Operation succeeded"

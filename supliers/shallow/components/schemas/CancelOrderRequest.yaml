@@ -1,0 +1,99 @@
+type: object
+description: Request payload for order cancellation (AES-encrypted at transport; see Data-Exchange-And-Security)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: ./CommonResponseHeader.yaml
+  body:
+    type: object
+    description: request body (This field requires AES encryption during transmission)
+    required:
+      - sequenceId
+      - otaOrderId
+      - supplierOrderId
+      - confirmType
+      - items
+      - amount
+      - amountCurrency
+    properties:
+      sequenceId:
+        type: string
+        description: Channel's Batch Number (`yyyyMMdd` + 32-bit GUID without delimiters)
+        example: "20250507A1B2C3D4E5F6G7H8"
+      otaOrderId:
+        type: string
+        description: Channel order number
+        example: "OTA1234567890"
+      supplierOrderId:
+        type: string
+        description: GGT order number
+        example: "SUP0987654321"
+      confirmType:
+        type: integer
+        description: |
+          Confirmation type:
+          1. Only notify GGT with new order information; GGT returns `"0000"` (no downstream effect).
+          2. System confirmed by supplier; Channel proceeds based on GGT's success/failure response.
+        example: 2
+      items:
+        type: array
+        description: Array of order-line item objects
+        items:
+          type: object
+          required:
+            - itemId
+            - PLU
+            - cancelType
+            - quantity
+          properties:
+            itemId:
+              type: string
+              description: Order line item identifier
+              example: "LI123456"
+            PLU:
+              type: string
+              description: Minimum Unit of GGT Product
+              example: "PLU98765"
+            lastConfirmTime:
+              type: string
+              format: date-time
+              description: |
+                Latest confirmation time (`yyyy-MM-dd HH:mm:ss`, Beijing time).  
+                Sent only when `cancelType=2` and after-sales service is “provided by GGT.”  
+                If not processed by this time, Channel must cancel the order by default.
+              example: "2025-05-07 16:00:00"
+            cancelType:
+              type: integer
+              description: |
+                Cancel type:
+                0 = Full refund  
+                1 = Partial refund by quantity  
+                2 = Partial refund by passenger
+              example: 0
+            quantity:
+              type: integer
+              description: Total number of units being canceled
+              example: 2
+            passengers:
+              type: array
+              description: |
+                Cancellation passenger node (required when `cancelType=2`; include all passengers).
+              items:
+                type: object
+                required:
+                  - passengerId
+                properties:
+                  passengerId:
+                    type: string
+                    description: Passenger identifier
+                    example: "P1"
+      amount:
+        type: number
+        description: Cancelled refund amount
+        example: 300.00
+      amountCurrency:
+        type: string
+        description: Cancelled refund currency (ISO code, e.g. CNY)
+        example: "CNY"

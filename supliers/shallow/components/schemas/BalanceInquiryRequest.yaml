@@ -1,0 +1,18 @@
+type: object
+description: Request payload for channel's balance query in the GGT system (AES-encrypted during transport; see Data-Exchange-And-Security)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: './CommonRequestHeader.yaml'
+  body:
+    type: object
+    description: request body (AES-encrypted)
+    required:
+      - vendorId
+    properties:
+      vendorId:
+        type: string
+        description: Vendor ID in the channel's system, mapped one-to-one with GGT in channel's system
+        example: "VEND12345"

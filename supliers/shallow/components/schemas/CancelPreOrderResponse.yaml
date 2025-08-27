@@ -1,0 +1,11 @@
+type: object
+description: Pre-order cancellation response (AES-encrypted in `body` when `resultCode` is `0000`)
+required:
+  - header
+  - body
+properties:
+  header:
+    $ref: ./CommonResponseHeader.yaml
+  body:
+    type: object
+    description: response body (This field requires AES encryption during transmission; see Data-Exchange-And-Security)

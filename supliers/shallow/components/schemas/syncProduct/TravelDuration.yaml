@@ -1,0 +1,19 @@
+# components/schemas/TravelDuration.yaml
+type: object
+description: Duration of the product or itinerary segment
+required:
+  - unit
+  - value
+properties:
+  unit:
+    type: string
+    enum:
+      - Day
+      - Hour
+      - Minute
+    description: Unit of time
+    example: Hour
+  value:
+    type: integer
+    description: Amount of time
+    example: 2

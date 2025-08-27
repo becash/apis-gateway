@@ -1,0 +1,16 @@
+type: object
+required:
+  - otaOrderId
+properties:
+  sequenceId:
+    type: string
+    description: GGT batch number; format yyyyMMdd + 32-char GUID without delimiters.
+    example: "20250818c0a8010a5b7d4b8eaf8a4b9d1d2e3f4"
+  otaOrderId:
+    type: string
+    description: Channel order number.
+    example: "T202408180001"
+  supplierOrderId:
+    type: string
+    description: Supplier order number.
+    example: "S-778899"

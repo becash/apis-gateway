@@ -1,0 +1,14 @@
+# components/schemas/TicketInfo.yaml
+type: object
+description: Ticket delivery method information
+required:
+  - deliveryMethods
+properties:
+  deliveryMethods:
+    type: string
+    enum:
+      - DIGITAL
+      - PRINT
+      - VALID_ID
+    description: Ticket delivery method
+    example: DIGITAL

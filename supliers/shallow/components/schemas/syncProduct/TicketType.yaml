@@ -1,0 +1,43 @@
+type: object
+description: A single ticket–type entry.
+required:
+  - code
+properties:
+  code:
+    type: string
+    maxLength: 20
+    enum:
+      - Adult
+      - Child
+      - Senior
+      - Youth
+      - Infant
+      - Student
+      - Traveler
+      - Customized
+    description: |
+      Ticket type code. All codes except "Customized" are predefined.
+  customCode:
+    type: string
+    maxLength: 20
+    description: |
+      Custom ticket code; required if code is "Customized".
+  customName:
+    type: string
+    maxLength: 30
+    description: |
+      Custom ticket name; required if code is "Customized".
+  restrictions:
+    type: object
+    description: Restrictions of ticket type.
+    properties:
+      minAge:
+        type: integer
+        minimum: 1
+        description: Minimum age (cannot be 0).
+      maxAge:
+        type: integer
+        description: Maximum age.
+  description:
+    type: string
+    description: Additional description of the ticket type.
