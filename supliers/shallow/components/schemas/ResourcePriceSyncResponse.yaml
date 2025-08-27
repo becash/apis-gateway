@@ -1,7 +1,0 @@
-type: object
-description: Response for resource price synchronization
-required:
-  - header
-properties:
-  header:
-    $ref: './CommonResponseHeader.yaml'

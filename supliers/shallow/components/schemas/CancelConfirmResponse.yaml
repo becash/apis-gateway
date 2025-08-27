@@ -1,7 +1,0 @@
-type: object
-description: Order cancellation confirmation response
-required:
-  - header
-properties:
-  header:
-    $ref: './CommonResponseHeader.yaml'

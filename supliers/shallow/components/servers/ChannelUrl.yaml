@@ -1,6 +1,0 @@
-servers:
-  - url: "{channelURL}"
-    description: "Channel callback URL"
-    variables:
-      channelURL:
-        default: "https://your-channel.example.com"

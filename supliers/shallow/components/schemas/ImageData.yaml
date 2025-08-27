@@ -1,9 +1,0 @@
-type: object
-description: channel image metadata
-required:
-  - imageId
-properties:
-  imageId:
-    type: string
-    description: channel image ID
-    example: "IMG_123456789"
